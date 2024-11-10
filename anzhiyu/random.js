@@ -1,0 +1,1 @@
+var posts=["2023/11/04/CVE-2023-4966：Citrix-Gateway内存信息泄漏/","2023/10/24/常用webshell/","2023/10/27/从访客到拿下内网域控/","2023/10/26/记一次域控探索/","2023/10/28/常用命令/"];function toRandomPost(){pjax.loadUrl('/'+posts[Math.floor(Math.random() * posts.length)]);};

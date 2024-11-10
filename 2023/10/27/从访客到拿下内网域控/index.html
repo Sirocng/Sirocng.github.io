@@ -1,0 +1,373 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"><title>从访客到拿下内网域控 | Sircong_Blog</title><meta name="keywords" content="渗透测试,文件上传,域控"><meta name="author" content="Sircong"><meta name="copyright" content="Sircong"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#f7f9fe"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-touch-fullscreen" content="yes"><meta name="apple-mobile-web-app-title" content="从访客到拿下内网域控"><meta name="application-name" content="从访客到拿下内网域控"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="#f7f9fe"><meta property="og:type" content="article"><meta property="og:title" content="从访客到拿下内网域控"><meta property="og:url" content="http://example.com/2023/10/27/%E4%BB%8E%E8%AE%BF%E5%AE%A2%E5%88%B0%E6%8B%BF%E4%B8%8B%E5%86%85%E7%BD%91%E5%9F%9F%E6%8E%A7/index.html"><meta property="og:site_name" content="Sircong_Blog"><meta property="og:description" content="前言一次企业开放式红蓝演练，从外网探索到拿下内网域控的过程，整理了一些过程。 正文1、开始根据提供的公司名称，到处收集了一些域名整合到一个表里面，在筛选查找登录、管理、vpn等特殊的资产时，找到一个更特殊些的存在，SRC平台。就感觉比较难搞了，估计到处都被白帽子光顾过了。  2、找到一个vpn资产，"><meta property="og:locale" content="en"><meta property="og:image" content="http://example.com/img/covervisit.png"><meta property="article:author" content="Sircong"><meta property="article:tag"><meta name="twitter:card" content="summary"><meta name="twitter:image" content="http://example.com/img/covervisit.png"><meta name="description" content="前言一次企业开放式红蓝演练，从外网探索到拿下内网域控的过程，整理了一些过程。 正文1、开始根据提供的公司名称，到处收集了一些域名整合到一个表里面，在筛选查找登录、管理、vpn等特殊的资产时，找到一个更特殊些的存在，SRC平台。就感觉比较难搞了，估计到处都被白帽子光顾过了。  2、找到一个vpn资产，"><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="http://example.com/2023/10/27/%E4%BB%8E%E8%AE%BF%E5%AE%A2%E5%88%B0%E6%8B%BF%E4%B8%8B%E5%86%85%E7%BD%91%E5%9F%9F%E6%8E%A7/"><link rel="preconnect" href="//cdn.cbd.int"/><meta name="google-site-verification" content="xxx"/><meta name="baidu-site-verification" content="code-xxx"/><meta name="msvalidate.01" content="xxx"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.cbd.int/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.cbd.int/@fancyapps/ui@5.0.20/dist/fancybox/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  linkPageTop: undefined,
+  peoplecanvas: undefined,
+  postHeadAiDescription: {"enable":true,"gptName":"Sircong","mode":"local","switchBtn":false,"btnLink":"https://afdian.net/item/886a79d4db6711eda42a52540025c377","randomNum":3,"basicWordCount":1000,"key":"xxxx","Referer":"https://xx.xx/"},
+  diytitle: undefined,
+  LA51: undefined,
+  greetingBox: undefined,
+  twikooEnvId: '',
+  commentBarrageConfig:undefined,
+  root: '/',
+  preloader: {"source":3},
+  friends_vue_info: undefined,
+  navMusic: true,
+  mainTone: undefined,
+  authorStatus: {"skills":["💻 渗透测试","🔭 代码审计","🌐 python/java/php/go","💬 努力做对社会有副作用的人"]},
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"languages":{"hits_empty":"We didn't find any results for the search: ${query}"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简","rightMenuMsgToTraditionalChinese":"转为繁体","rightMenuMsgToSimplifiedChinese":"转为简体"},
+  noticeOutdate: {"limitDay":365,"position":"top","messagePrev":"It has been","messageNext":"days since the last update, the content of the article may be outdated."},
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":false,"highlightHeightLimit":330},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    simplehomepage: true,
+    post: false
+  },
+  runtime: 'days',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: {"copy":true,"copyrightEbable":false,"limitCount":50,"languages":{"author":"Author: Sircong","link":"Link: ","source":"Source: Sircong_Blog","info":"Copyright is owned by the author. For commercial reprints, please contact the author for authorization. For non-commercial reprints, please indicate the source.","copySuccess":"Copy success, copy and reprint please mark the address of this article"}},
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"Traditional Chinese Activated Manually","cht_to_chs":"Simplified Chinese Activated Manually","day_to_night":"Dark Mode Activated Manually","night_to_day":"Light Mode Activated Manually","bgLight":"#425AEF","bgDark":"#1f1f1f","position":"top-center"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.cbd.int/flickr-justified-gallery@2.1.2/dist/fjGallery.min.js',
+      css: 'https://cdn.cbd.int/flickr-justified-gallery@2.1.2/dist/fjGallery.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: false,
+  shortcutKey: undefined,
+  autoDarkmode: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  configTitle: 'Sircong_Blog',
+  title: '从访客到拿下内网域控',
+  postAI: '',
+  pageFillDescription: '前言, 正文前言一次企业开放式红蓝演练从外网探索到拿下内网域控的过程整理了一些过程正文开始根据提供的公司名称到处收集了一些域名整合到一个表里面在筛选查找登录管理等特殊的资产时找到一个更特殊些的存在平台就感觉比较难搞了估计到处都被白帽子光顾过了找到一个资产但是访问服务出错后面在测其他资产的时候发现有拦截探测注入啥的直接就拦截了继续收集的时候使用公司名称在微信搜索小程序找到访客预约小程序对小程序抓包获取到域名发现小程序管理后台使用邮箱登录且存在验证码根据这个访客管理后台登录页面的特征在上搜索了一下发现有不少相关的资产找到几个应该更老的版本可以用前台用户名密码登录有的没有验证码想着看能不能在这几个老版本找到些未授权的接口尤其是上传接口就花了点时间测了一下试了几个系统在其中一个弱口令密码进去了发现了注入垂直越权但都是在登录后才能利用垂直越权访问应该是用户管理接口返回了创建用户的信息明文密码也被带出来了发现创建的用户都是统一用一个邮箱用户创建的这个邮箱后缀发现跟这个访客产品公司的域名一样猜测这个访客系统存在默认账户而且根据这个带出的明文密码频率最高的密码猜测可能是默认密码带着猜测的的默认账号去我的目标访客系统尝试登录成功登录这个访客预约的后台进入后台分别找到了很重要的两个信息部分企业员工部门工号信息部分应该是内网办公地址后面对这个管理后台没有发现命令执行上传漏洞的地方因为知道有发现的注入都没有过度花时间去利用在收集到的资产下载到了企业办公应用安卓版本工号已经有了但是没有密码随便测试登录抓包看了下果不其然被加密了后面对这个了一下使用动态解密算法工具发现是加密返回去在那个访客管理后台查看组织架构发现很多测试账号猜测可能开发这个系统测试生成的或者本来就是这个企业有的一些测试账号使用这些测试手机号和这个访客管理后台的默认密码去登录发现密码错误但是确认了可以登录测试直接使用作为密码有个测试手机号码成功登录进入后对个人信息头像上传的功能进行抓包测试发现可以修改上传文件名后缀但是上传时会对图片强制进行裁剪不会原图等比大小上传且上传进行加密经过多次测试上传发现几个问题上传是以格式传递但编码之后的数据为二进制需要用解码之后才可以放入中不能直接将代码直接编码后放到数据包上传直接报错会对上传内容检测图片属性不能将合成的图片马通过上传页面上传裁剪过后图片马损失原来的字节即造成图片马不完整所以在本地生成一张字节内容很小的文件和一个含有打印代码的文件因为第一次这样上传不清楚是否可行所以不直接上传先上传代码看看有没有执行的可能将该两个文件通过命令生成一张图片马用打开可以看到代码追加到图片内容里面去了使用写一个加密脚本直接本地对合成的图片马进行加密将生成加密信息在数据包替换内容上传修改后缀名为成功上传返回地址访问上传的伪图片马发现代码成功执行打印输出说明当前上传图片马的方式可行再次生成一个含有哥斯拉的图片马加密处理上传得到存储路径使用哥斯拉连接成功连接获取服务器权限至此进入内网利用这台服务器使用代理到本地一下在访客后台发现的的登录内网成功通说明后台记录的确实可能是办公网因为我对进入办公网后有扫描公开共享文件的习惯对访客后台发现的段扫描了一下有几个共享文件夹但是没有权限访问因为我的最大的目标的就是域控但是现在我没有一台域内机器也没一个域内用户的账号和密码扫描了发现的段看看有没有向日葵没有更新版本的但是没有发现一台后来在访客管理后台看到的组织架构上找了几个行政的工号和姓名在搜了一下可以搜到打开聊天就用个测试账号伪装成支持人员发了一份假的报告和一个向日葵版本给他们因为那个聊天页面有很密的公司水印打码之后简直不能看这里用微信聊天还原一下发软件给他好一会儿没反应搞得我很急因为我登录是用得一个测试账号名字是还以为这个公司大几千人他刚好和支持的人同一个办公区他去找人求证了等了快多分钟左右他才回复说安装好了给我连接码远程到他桌面后面装模做样调出搞这边又赶紧扫描的他的确认端口执行远程命令修改了他电脑的密码等到了大概吃饭午休时间用登录电脑目标是在他看浏览器有没有保存密码本地有没有什么记录的密码的文件在获取了保存的密码外在他桌面文件夹找到了一个常用网址获取到了几个其他员工的账号不过更重要的是在他桌面文件夹发现了一个会议室投屏表格里面记录了好几个会议室投屏电脑地址及登录名密码有了员工账密尝试去登录那个不出意外的需要短信验证因为后面在拿一些系统目标的时候有的需要这个扫码登录有的需要绑定手机号码登录这里先说下对这个后台的超管的获取和手机号码绑定问题后面在横移到员工的电脑上发现都有一个工作台平台这个上面可以更改绑定手机号码但是更改的时候会进行旧手机验证后面测试验证的时候不获取手机验证码随便输入数字然后抓包在返回包中将参数的值改为即可绕过这步验证输入自己的号码获取验证码进行绑定后面发现这样想要用一个员工的账号扫码的时候都要这样操作一下太麻烦了就试着找到的管理后台获取到超管权限应该有权限去改所有员工的手机号码后面拿到域控后搜索特定人员电脑登录得到了地址和一个普通管理员权限使用工号密码验证码登录抓包发现返回包有个但是是加密的在前端搜索发现使用加密并且发现密钥和向量但是用这个密钥和向量根本解不开这个后来因为想起这个登录的时候也是使用的加密用这个登录时得到密钥和向量可以解开解密发现加密信息为系统用户时间戳系统用户名工号其他其他登录后在页面点击头像遍历可以得到所有管理员信息得到超管超管用户名为构造超管替换相关当前时间戳系统名称进行加密用伪造的在登录抓包替换返回包的成功获取超管权限后台添加了一个超管权限进行权限维持至此拿到了后台超管权限可以对所有员工更改手机号码解决后面在一些重要系统扫码验证的问题再回来继续讲拿域控的过程因为我已经拿到了几个员工账密和几台端权限为了后续目标部门特定员工用户定位搜索同时对域内环境分析提供打下域控的可能先对域内使用进行数据采集传出来导进到发现域用户快上万个了执行命令知道当前域控主机因为我一开始选定打域控的方式就是证书模板漏洞主要傻瓜式操作适合我这种脚本小子使用得到的员工账号和密码用探测了一下发现的只有一个证书在已有权限的办公上执行查看证书知道了证书名称证书服务器直接证书服务器计算机名得到地址然后使用地址构造证书服务地址发现证书服务地址确实可以访问而且访问不是禁止访问同时在上检索了一下服务发现存在服务也就是也可能可以用机器账户申请域控的机器证书获取域控权限有两个获取域控权限可能想着我都是碰运气先试了机器账户申请证书的漏洞从简单的开始搞使用工具先查看下属性看到结果为只要大于就可以创建机器账户之后再使用工具添加一个机器账户并将它的改为与域控机器相同用创建的机器账户去申请机器证书成功申请到证书再去验证证书是否有效成功获取到哈希通过套件中的使用该票据并执行来转储域用户哈希成功获取到域控机器的使用获取到的域控用户的票据通过获取到域控制器的最高权限机器没有开放端口执行命令开启远程桌面登录至域控机器至此就拿到了域控权限权限维持的过程跳过再说一下后面一个让我震惊的发现后面在域内搜索一些权限比较大的用户时找到一个运维工程师在他电脑上发现一个文件夹里面有一个域相关运维脚本打开浏览这个脚本代码发现他们给域用户加域的时候会直接给电脑本地的密码设置成一个很简单的弱口令公司名顿时在想会不会域内所有员工电脑的密码都是这个后面为了验证一下这个猜想就写了脚本跑了几个不同段的员工办公直接使用公司名登录测试一下发现跑的十多个都成功了这不是全员密码裸奔至此域控员工通用密码手机扫码验证都搞定了利用这些不断在内网扩展拿到想要的目标',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-11-10 21:31:24',
+  postMainColor: '',
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#18171d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#f7f9fe')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+          const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+          const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+          const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+          if (t === undefined) {
+            if (isLightMode) activateLightMode()
+            else if (isDarkMode) activateDarkMode()
+            else if (isNotSpecified || hasNoSupport) {
+              const now = new Date()
+              const hour = now.getHours()
+              const isNight = hour <= 6 || hour >= 18
+              isNight ? activateDarkMode() : activateLightMode()
+            }
+            window.matchMedia('(prefers-color-scheme: dark)').addListener(e => {
+              if (saveToLocal.get('theme') === undefined) {
+                e.matches ? activateDarkMode() : activateLightMode()
+              }
+            })
+          } else if (t === 'light') activateLightMode()
+          else activateDarkMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body data-type="anzhiyu"><div id="web_bg"></div><div id="an_music_bg"></div><div id="loading-box" onclick="document.getElementById(&quot;loading-box&quot;).classList.add(&quot;loaded&quot;)"><div class="loading-bg"><img class="loading-img nolazyload" alt="加载头像" src="https://avatars.githubusercontent.com/u/56618386?v=4"/><div class="loading-image-dot"></div></div></div><script>const preloader = {
+  endLoading: () => {
+    document.getElementById('loading-box').classList.add("loaded");
+  },
+  initLoading: () => {
+    document.getElementById('loading-box').classList.remove("loaded")
+  }
+}
+window.addEventListener('load',()=> { preloader.endLoading() })
+setTimeout(function(){preloader.endLoading();},10000)
+
+if (true) {
+  document.addEventListener('pjax:send', () => { preloader.initLoading() })
+  document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+}</script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.1.10/progress_bar/progress_bar.css"/><script async="async" src="https://cdn.cbd.int/pace-js@1.2.4/pace.min.js" data-pace-options="{ &quot;restartOnRequestAfter&quot;:false,&quot;eventLag&quot;:false}"></script><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><div id="nav-group"><span id="blog_name"><a id="site-name" href="/" accesskey="h"><div class="title">Sircong_Blog</div><i class="anzhiyufont anzhiyu-icon-house-chimney"></i></a></span><div class="mask-name-container"><div id="name-container"><a id="page-name" href="javascript:anzhiyu.scrollToDest(0, 500)">PAGE_NAME</a></div></div><div id="menus"></div><div id="nav-right"><div class="nav-button" id="randomPost_button"><a class="site-page" onclick="toRandomPost()" title="随机前往一个文章" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-dice"></i></a></div><div class="nav-button" id="search-button"><a class="site-page social-icon search" href="javascript:void(0);" title="搜索🔍" accesskey="s"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span> Search</span></a></div><input id="center-console" type="checkbox"/><label class="widget" for="center-console" title="中控台" onclick="anzhiyu.switchConsole();"><i class="left"></i><i class="widget center"></i><i class="widget right"></i></label><div id="console"><div class="console-card-group-reward"><ul class="reward-all console-card"><li class="reward-item"><a href="/img/null.gif" target="_blank"><img class="post-qr-code-img" alt="Sircong" src="/img/null.gif"/></a><div class="post-qr-code-desc">Sircong</div></li><li class="reward-item"><a href="/img/chai.gif" target="_blank"><img class="post-qr-code-img" alt="看看就好" src="/img/chai.gif"/></a><div class="post-qr-code-desc">看看就好</div></li></ul></div><div class="console-card-group"><div class="console-card-group-left"><div class="console-card" id="card-newest-comments"><div class="card-content"><div class="author-content-item-tips">互动</div><span class="author-content-item-title"> Newest Comments</span></div><div class="aside-list"><span>loading...</span></div></div></div><div class="console-card-group-right"><div class="console-card tags"><div class="card-content"><div class="author-content-item-tips">兴趣点</div><span class="author-content-item-title">寻找你感兴趣的领域</span><div class="card-tags"><div class="item-headline"></div><div class="card-tag-cloud"><a href="/tags/CVE/" style="font-size: 1.05rem;">CVE<sup>1</sup></a><a href="/tags/%E5%9F%9F%E6%8E%A7/" style="font-size: 1.05rem;">域控<sup>2</sup></a><a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 1.05rem;">文件上传<sup>1</sup></a><a href="/tags/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/" style="font-size: 1.05rem;">渗透测试<sup>2</sup></a><a href="/tags/%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" style="font-size: 1.05rem;">漏洞复现<sup>1</sup></a><a href="/tags/%E7%AC%94%E8%AE%B0/" style="font-size: 1.05rem;">笔记<sup>2</sup></a></div></div><hr/></div></div><div class="console-card history"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-box-archiv"></i><span>文章</span></div><div class="card-archives"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-archive"></i><span>Archives</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/11/"><span class="card-archive-list-date">November 2023</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">1</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/10/"><span class="card-archive-list-date">October 2023</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">4</span><span>篇</span></div></a></li></ul></div><hr/></div></div></div><div class="button-group"><div class="console-btn-item"><a class="darkmode_switchbutton" title="显示模式切换" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-moon"></i></a></div><div class="console-btn-item" id="consoleHideAside" onclick="anzhiyu.hideAsideBtn()" title="边栏显示控制"><a class="asideSwitch"><i class="anzhiyufont anzhiyu-icon-arrows-left-right"></i></a></div><div class="console-btn-item on" id="consoleCommentBarrage" onclick="anzhiyu.switchCommentBarrage()" title="热评开关"><a class="commentBarrage"><i class="anzhiyufont anzhiyu-icon-message"></i></a></div><div class="console-btn-item" id="consoleMusic" onclick="anzhiyu.musicToggle()" title="音乐开关"><a class="music-switch"><i class="anzhiyufont anzhiyu-icon-music"></i></a></div></div><div class="console-mask" onclick="anzhiyu.hideConsole()" href="javascript:void(0);"></div></div><div class="nav-button" id="nav-totop"><a class="totopbtn" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i><span id="percent" onclick="anzhiyu.scrollToDest(0,500)">0</span></a></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);" title="切换"><i class="anzhiyufont anzhiyu-icon-bars"></i></a></div></div></div></nav><div id="post-info"><div id="post-firstinfo"><div class="meta-firstline"><a class="post-meta-original">原创</a><span class="post-meta-categories"><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-inbox post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/" itemprop="url">渗透测试</a></span><span class="article-meta tags"><a class="article-meta__tags" href="/tags/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/" tabindex="-1" itemprop="url"> <span> <i class="anzhiyufont anzhiyu-icon-hashtag"></i>渗透测试</span></a><a class="article-meta__tags" href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" tabindex="-1" itemprop="url"> <span> <i class="anzhiyufont anzhiyu-icon-hashtag"></i>文件上传</span></a><a class="article-meta__tags" href="/tags/%E5%9F%9F%E6%8E%A7/" tabindex="-1" itemprop="url"> <span> <i class="anzhiyufont anzhiyu-icon-hashtag"></i>域控</span></a></span></div></div><h1 class="post-title" itemprop="name headline">从访客到拿下内网域控</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="anzhiyufont anzhiyu-icon-calendar-days post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" itemprop="dateCreated datePublished" datetime="2023-10-27T13:59:14.000Z" title="Created 2023-10-27 21:59:14">2023-10-27</time><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-history post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" itemprop="dateCreated datePublished" datetime="2024-11-10T13:31:24.179Z" title="Updated 2024-11-10 21:31:24">2024-11-10</time></span></div><div class="meta-secondline"><span class="post-meta-separator">       </span><span class="post-meta-position" title="作者IP属地为广州"><i class="anzhiyufont anzhiyu-icon-location-dot"></i>广州</span></div></div></div><section class="main-hero-waves-area waves-area"><svg class="waves-svg" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto"><defs><path id="gentle-wave" d="M -160 44 c 30 0 58 -18 88 -18 s 58 18 88 18 s 58 -18 88 -18 s 58 18 88 18 v 44 h -352 Z"></path></defs><g class="parallax"><use href="#gentle-wave" x="48" y="0"></use><use href="#gentle-wave" x="48" y="3"></use><use href="#gentle-wave" x="48" y="5"></use><use href="#gentle-wave" x="48" y="7"></use></g></svg></section><div id="post-top-cover"><img class="nolazyload" id="post-top-bg" src="/img/covervisit.png"></div></header><main id="blog-container"><div class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container" itemscope itemtype="http://example.com/2023/10/27/%E4%BB%8E%E8%AE%BF%E5%AE%A2%E5%88%B0%E6%8B%BF%E4%B8%8B%E5%86%85%E7%BD%91%E5%9F%9F%E6%8E%A7/"><header><a class="post-meta-categories" href="/categories/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/" itemprop="url">渗透测试</a><a href="/tags/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/" tabindex="-1" itemprop="url">渗透测试</a><a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" tabindex="-1" itemprop="url">文件上传</a><a href="/tags/%E5%9F%9F%E6%8E%A7/" tabindex="-1" itemprop="url">域控</a><h1 id="CrawlerTitle" itemprop="name headline">从访客到拿下内网域控</h1><span itemprop="author" itemscope itemtype="http://schema.org/Person">Sircong</span><time itemprop="dateCreated datePublished" datetime="2023-10-27T13:59:14.000Z" title="Created 2023-10-27 21:59:14">2023-10-27</time><time itemprop="dateCreated datePublished" datetime="2024-11-10T13:31:24.179Z" title="Updated 2024-11-10 21:31:24">2024-11-10</time></header><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>一次企业开放式红蓝演练，从外网探索到拿下内网域控的过程，整理了一些过程。</p>
+<h1 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h1><p>1、开始根据提供的公司名称，到处收集了一些域名整合到一个表里面，在筛选查找登录、管理、vpn等特殊的资产时，找到一个更特殊些的存在，SRC平台。就感觉比较难搞了，估计到处都被白帽子光顾过了。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/b2/b21.png" alt="img"></p>
+<p>2、找到一个vpn资产，但是访问服务出错。后面在测其他资产的时候发现有waf拦截，探测fastjson、SQL注入啥的直接就拦截了。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/b2/b22.png" alt="img"></p>
+<p>3、继续收集的时候，使用公司名称在微信搜索小程序，找到访客预约小程序，对小程序抓包获取到域名，发现小程序管理后台。使用邮箱登录且存在验证码。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/b2/b23.png" alt="img"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/b2/b24.png" alt="img"></p>
+<p>4、根据这个访客管理后台登录页面的html特征，在fofa上搜索了一下，发现有不少相关的资产，找到几个应该更老的版本，可以用前台用户名密码登录，有的没有验证码。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/b2/b25.png" alt="img"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/b2/b26.png" alt="img"></p>
+<p>5、想着看能不能在这几个老版本找到些未授权的接口，尤其是上传接口，就花了点时间测了一下：</p>
+<blockquote>
+<p><font color="#FF1493">试了几个系统在其中一个弱口令密码进去了，发现了SQL注入、垂直越权，但都是在登录后才能利用。垂直越权访问应该是用户管理接口，返回了创建用户的信息，明文密码也被带出来了，发现创建的用户都是统一用一个邮箱用户创建的，这个邮箱后缀发现跟这个访客产品公司的域名一样，猜测这个访客系统存在默认账户：<code>test@test.com</code>，而且根据这个带出的明文密码频率最高的密码，猜测可能是默认密码：<code>test123</code></font></p>
+</blockquote>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/b2/b27.png" alt="img"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/b2/b28.png" alt="img"></p>
+<p>6、带着猜测的<code>test@test.com/test123</code>的默认账号去我的目标访客系统尝试登录，成功登录这个访客预约的后台。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/b2/b29.png" alt="img"></p>
+<p>7、进入后台，分别找到了很重要的两个信息，部分企业员工部门、工号信息，部分应该是内网办公地址ip。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/b2/b210.png" alt="img"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/b2/b211.png" alt="img"></p>
+<p>8、后面对这个管理后台没有发现命令执行、上传漏洞的地方，因为知道有waf，发现的SQL注入都没有过度花时间去利用。</p>
+<p>9、在收集到的资产下载到了企业办公应用ios、安卓版本，工号已经有了，但是没有密码。App随便测试登录抓包看了下，果不其然被加密了，后面对这个app hook了一下，使用动态解密算法工具发现是<code>aes加密</code>。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/b2/b212.png" alt="img"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/b2/b213.png" alt="img"></p>
+<p>10、返回去在那个访客管理后台查看组织架构，发现很多测试账号，猜测可能开发这个系统测试生成的，或者本来就是这个企业有的一些测试账号。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/b2/b214.png" alt="img"></p>
+<p>11、使用这些测试手机号和这个访客管理后台的默认密码去登录app，发现密码错误，但是确认了可以登录。测试直接使用123456作为密码，有1个测试手机号码成功登录。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/b2/b215.png" alt="img"></p>
+<p>12、进入app后，对个人信息头像上传的功能进行抓包测试，发现可以修改上传文件名后缀，但是上传时会对图片强制进行裁剪，不会原图等比大小上传，且上传进行<code>imgBase64加密</code>。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/b2/b216.png" alt="img"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/b2/b217.png" alt="img"></p>
+<p>13、经过多次测试上传发现几个问题：</p>
+<blockquote>
+<p><font color="#FF1493">1，imgBase64上传是以json格式传递，但base64编码之后的数据为二进制，需要用ascii解码之后才可以放入json中</font><br><font color="#FF1493">2，不能直接将webshell代码直接imgBase64编码后放到数据包上传，直接报错，会对上传内容<code>检测图片属性</code></font><br><font color="#FF1493">3，不能将合成的jsp图片马通过上传页面上传，裁剪过后图片马损失原来的字节，即造成图片马不完整</font></p>
+</blockquote>
+<p>14、所以在本地生成一张字节内容很小的png文件，和一个含有打印代码<code>&lt;%out.println(&quot;i am sircong&quot;);%&gt;</code>的jsp文件，（因为第一次这样上传，不清楚是否可行，所以不直接上传webs hell，先上传print代码看看有没有执行的可能）。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/b2/b218.png" alt="img"></p>
+<p>15、将该两个文件通过cmd命令生成一张jsp图片马1.png，用Notepad++打开可以看到jsp代码追加到图片内容里面去了。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/b2/b219.png" alt="img"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/b2/b220.png" alt="img"></p>
+<p>16、使用python写一个imgBase64加密脚本，直接本地对合成的图片马1.png进行imgBase64加密，将生成加密信息在数据包替换内容上传，修改后缀名为jsp，成功上传返回地址。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/b2/b221.png" alt="img"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/b2/b222.png" alt="img"></p>
+<p>17、访问上传的伪jsp图片马，发现代码成功执行打印输出i am sircong，说明当前上传“图片马“的方式可行。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/b2/b223.png" alt="img"></p>
+<p>18、再次cmd生成一个含有哥斯拉webshell的jsp图片马imgBase64加密处理上传，得到存储路径。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/b2/b224.png" alt="img"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/b2/b225.png" alt="img"></p>
+<p>19、使用哥斯拉连接，成功连接获取服务器root权限。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/b2/b226.png" alt="img"></p>
+<p>20、至此进入内网，利用这台服务器使用nps+Proxifier Socks5代理到本地，ping一下在访客后台发现的的登录内网ip，成功ping通，说明后台记录的ip确实可能是办公网ip。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/b2/b227.png" alt="img"></p>
+<p>21、因为我对进入办公网后有扫描公开共享文件的习惯，对访客后台发现的ip段，扫描了一下，有几个共享文件夹，但是没有权限访问。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/b2/b228.png" alt="img"></p>
+<p>22、因为我的最大的目标的就是域控，但是现在我没有一台域内windows机器，也没一个域内用户的账号和密码，扫描了发现的IP段，看看有没有向日葵没有更新版本的，但是没有发现一台。后来在访客管理后台看到的组织架构上找了几个行政的工号和姓名在app搜了一下，可以搜到打开聊天，就用个测试账号伪装成it支持人员，发了一份假的报告和一个向日葵RCE版本给他们，因为那个app聊天页面有很密的公司水印，打码之后简直不能看，这里用微信聊天还原一下。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/b2/b229.png" alt="img"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/b2/b230.png" alt="img"></p>
+<p>23、发软件给他好一会儿没反应，搞得我很急，因为我登录app是用得一个测试账号，名字是testtest1234，还以为这个公司大几千人他刚好和it支持的人同一个办公区，他去找人求证了。等了快10多分钟左右，他才回复说安装好了给我连接码远程到他桌面，后面装模做样调出cmd搞，这边又赶紧扫描的他的IP，确认端口，执行远程命令修改了他电脑administrator的密码。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/b2/b231.png" alt="img"></p>
+<p>24、等到了大概吃饭午休时间，用administrator登录电脑，目标是在他看浏览器有没有保存密码，本地有没有什么记录的密码的文件。在Google获取了保存的密码外，在他桌面文件夹找到了一个常用网址.txt，获取到了几个其他员工的账号。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/b2/b232.png" alt="img"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/b2/b233.png" alt="img"></p>
+<p>25、不过更重要的是在他桌面文件夹发现了一个会议室投屏表格，里面记录了好几个会议室投屏电脑IP地址及登录名密码！</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/b2/b234.png" alt="img"></p>
+<p>26、有了员工账密，尝试去登录那个app，不出意外的需要短信验证。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/b2/b235.png" alt="img"></p>
+<p>27、因为后面在拿一些系统目标的时候，有的需要这个app扫码登录，有的需要绑定手机号码登录，这里先说下对这个app后台的超管的获取，和手机号码绑定问题。</p>
+<p>28、后面在横移到员工的电脑上，发现都有一个工作台平台，这个上面可以更改绑定手机号码，但是更改的时候会进行旧手机验证。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/b2/b236.png" alt="img"></p>
+<p>29、后面测试验证的时候不获取手机验证码随便输入数字然后抓包，在返回包中将参数row的值改为1即可绕过这步验证，输入自己的号码获取验证码进行绑定。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/b2/b237.png" alt="img"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/b2/b238.png" alt="img"></p>
+<p>30、后面发现这样想要用一个员工的账号扫码的时候都要这样操作一下，太麻烦了，就试着找到app的管理后台，获取到超管权限应该有权限去改所有员工的手机号码。</p>
+<p>31、后面拿到域控后搜索特定人员电脑登录，得到了地址和一个普通管理员权限，使用工号密码+验证码登录，抓包发现返回包有个token，但是是加密的，在前端搜索token发现使用aes加密，并且发现密钥和向量。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/b2/b239.png" alt="img"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/b2/b240.png" alt="img"></p>
+<p>32、但是用这个密钥和向量根本解不开这个token，后来因为想起这个app登录的时候也是使用的aes加密，用这个app登录时hook得到aes密钥和向量可以解开token，解密发现token加密信息为：系统用户userid:时间戳:系统用户名（工号）:其他:其他。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/b2/b241.png" alt="img"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/b2/b242.png" alt="img"></p>
+<p>33、登录后在页面点击头像遍历userid可以得到所有管理员信息，得到超管userid：72769，超管用户名为：superAdmin，构造超管token,，替换相关userid，当前时间戳，系统名称进行加密，用伪造的token在登录抓包替换返 回包的token，成功获取超管权限，后台添加了一个超管权限进行权限维持。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/b2/b243.png" alt="img"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/b2/b244.png" alt="img"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/b2/b245.png" alt="img"></p>
+<p>34、至此拿到了app后台超管权限，可以对所有员工更改手机号码，解决后面在一些重要系统扫码验证的问题。</p>
+<p>35、再回来继续讲拿域控的过程，因为我已经拿到了几个员工账密，和几台pc端权限。</p>
+<p>36、为了后续目标部门特定员工用户定位搜索，同时对域内环境分析提供打下域控的可能，先对域内使用SharpHound进行数据采集，传出来导进到BloodHound，发现域用户快上万个了。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/b2/b246.png" alt="img"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/b2/b247.png" alt="img"></p>
+<p>37、执行命令知道当前域控主机。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/b2/b248.png" alt="img"></p>
+<p>38、因为我一开始选定打域控的方式就是证书模板漏洞（主要傻瓜式操作，适合我这种脚本小子），使用得到的员工账号和密码，用Certipy探测了一下，发现vuln的只有一个esc8证书。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/b2/b249.png" alt="img"></p>
+<p>39、在已有权限的办公pc上执行certutil -config - -ping 查看证书，知道了证书名称、证书服务器。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/b2/b250.png" alt="img"></p>
+<p>40、直接ping证书服务器计算机名，得到ip地址，然后使用IP地址构造证书web服务地址<a target="_blank" rel="noopener" href="http://127.0.0.1/certsrv/certfnsh.asp%EF%BC%8C%E5%8F%91%E7%8E%B0%E8%AF%81%E4%B9%A6%E6%9C%8D%E5%8A%A1web%E5%9C%B0%E5%9D%80%E7%A1%AE%E5%AE%9E%E5%8F%AF%E4%BB%A5%E8%AE%BF%E9%97%AE%EF%BC%8C%E8%80%8C%E4%B8%94%E8%AE%BF%E9%97%AE%E4%B8%8D%E6%98%AF403%E7%A6%81%E6%AD%A2%E8%AE%BF%E9%97%AE%E3%80%82">http://127.0.0.1/certsrv/certfnsh.asp，发现证书服务web地址确实可以访问，而且访问不是403禁止访问。</a></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/b2/b251.png" alt="img"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/b2/b252.png" alt="img"></p>
+<p>41、同时，在BloodHound上检索了一下Certificate Service服务，发现存在Certificate Service服务，也就是也可能可以用机器账户申请域控的机器证书获取域控权限（CVE-2022-26923）。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/b2/b253.png" alt="img"></p>
+<p>42、有两个获取域控权限可能，想着我都是碰运气，先试了机器账户申请证书的漏洞，从简单的开始搞。使用工具bloodyAD先查看下ms-DS-MachineAccountQuota属性，看到结果为100000，只要大于0就可以创建机器账户。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/b2/b254.png" alt="img"></p>
+<p>43、之后再使用工具Certipy添加一个机器账户，并将它的dns改为与域控机器相同。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/b2/b255.png" alt="img"></p>
+<p>44、用创建的机器账户hacker1$去申请机器证书，成功申请到证书。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/b2/b256.png" alt="img"></p>
+<p>45、再去验证证书是否有效，成功获取到哈希。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/b2/b257.png" alt="img"></p>
+<p>46、通过 impacket 套件中的 secretsdump.py 使用该票据，并执行 DCSync 来转储域用户哈希，成功获取到域控机器administrator的hash。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/b2/b258.png" alt="img"></p>
+<p>47、使用获取到的域控 Administrator 用户的票据，通过 wmiexec.py 获取到域控制器的最高权限。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/b2/b259.png" alt="img"></p>
+<p>48、机器没有开放3389端口，执行命令开启远程桌面，登录至域控机器。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/b2/b260.png" alt="img"></p>
+<p>49、至此，就拿到了域控权限，权限维持的过程跳过，再说一下后面一个让我震惊的发现。</p>
+<p>50、后面在域内搜索一些权限比较大的用户时，找到一个运维工程师。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/b2/b261.png" alt="img"></p>
+<p>51、在他电脑上发现一个文件夹，里面有一个域相关运维脚本，打开浏览这个脚本代码发现他们给域用户加域的时候会直接给电脑本地administrator的密码设置成一个很简单的弱口令：公司名@123. ,顿时在想会不会域内所有员工电脑administrator的密码都是这个。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/b2/b262.png" alt="img"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/b2/b263.png" alt="img"></p>
+<p>52、后面为了验证一下这个猜想，就写了脚本跑了几个不同ip段的员工办公ip，直接使用administrator&#x2F;公司名@123.登录rdp测试一下，发现跑的十多个ip都成功了，这不是全员密码裸奔。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/b2/b264.png" alt="img"></p>
+<p>53、至此，域控，员工通用密码，手机app扫码验证都搞定了，利用这些不断在内网扩展，拿到想要的目标。</p>
+</article><div class="post-copyright"><div class="copyright-cc-box"><i class="anzhiyufont anzhiyu-icon-copyright"></i></div><div class="post-copyright__author_box"><a class="post-copyright__author_img" href="/" title="头像"><img class="post-copyright__author_img_back" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://avatars.githubusercontent.com/u/56618386?v=4" title="头像" alt="头像"><img class="post-copyright__author_img_front" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://avatars.githubusercontent.com/u/56618386?v=4" title="头像" alt="头像"></a><div class="post-copyright__author_name">Sircong</div><div class="post-copyright__author_desc"></div></div><div class="post-copyright__post__info"><a class="post-copyright__original" title="该文章为原创文章，注意版权协议" href="http://example.com/2023/10/27/%E4%BB%8E%E8%AE%BF%E5%AE%A2%E5%88%B0%E6%8B%BF%E4%B8%8B%E5%86%85%E7%BD%91%E5%9F%9F%E6%8E%A7/">原创</a><a class="post-copyright-title"><span onclick="rm.copyPageUrl('http://example.com/2023/10/27/%E4%BB%8E%E8%AE%BF%E5%AE%A2%E5%88%B0%E6%8B%BF%E4%B8%8B%E5%86%85%E7%BD%91%E5%9F%9F%E6%8E%A7/')">从访客到拿下内网域控</span></a></div><div class="post-tools" id="post-tools"><div class="post-tools-left"><div class="rewardLeftButton"><div class="post-reward" onclick="anzhiyu.addRewardMask()"><div class="reward-button button--animated" title="赞赏作者"><i class="anzhiyufont anzhiyu-icon-hand-heart-fill"></i>打赏作者</div><div class="reward-main"><div class="reward-all"><span class="reward-title">感谢你赐予我前进的力量</span><ul class="reward-group"><li class="reward-item"><a href="/img/null.gif" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/null.gif" alt="Sircong"/></a><div class="post-qr-code-desc">Sircong</div></li><li class="reward-item"><a href="/img/chai.gif" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/chai.gif" alt="看看就好"/></a><div class="post-qr-code-desc">看看就好</div></li></ul><a class="reward-main-btn" href="/about/#about-reward" target="_blank"><div class="reward-text">赞赏者名单</div><div class="reward-dec">因为你们的支持让我意识到写文章的价值🙏</div></a></div></div></div><div id="quit-box" onclick="anzhiyu.removeRewardMask()" style="display: none"></div></div><div class="shareRight"><div class="share-link mobile"><div class="share-qrcode"><div class="share-button" title="使用手机访问这篇文章"><i class="anzhiyufont anzhiyu-icon-qrcode"></i></div><div class="share-main"><div class="share-main-all"><div id="qrcode" title="http://example.com/2023/10/27/%E4%BB%8E%E8%AE%BF%E5%AE%A2%E5%88%B0%E6%8B%BF%E4%B8%8B%E5%86%85%E7%BD%91%E5%9F%9F%E6%8E%A7/"></div><div class="reward-dec">使用手机访问这篇文章</div></div></div></div></div><div class="share-link weibo"><a class="share-button" target="_blank" href="https://service.weibo.com/share/share.php?title=从访客到拿下内网域控&amp;url=http://example.com/2023/10/27/%E4%BB%8E%E8%AE%BF%E5%AE%A2%E5%88%B0%E6%8B%BF%E4%B8%8B%E5%86%85%E7%BD%91%E5%9F%9F%E6%8E%A7/&amp;pic=/img/covervisit.png" rel="external nofollow noreferrer noopener"><i class="anzhiyufont anzhiyu-icon-weibo"></i></a></div><div class="share-link copyurl"><div class="share-button" id="post-share-url" title="复制链接" onclick="rm.copyPageUrl()"><i class="anzhiyufont anzhiyu-icon-link"></i></div></div></div></div></div><div class="post-copyright__notice"><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="post-tools-right"><div class="tag_share"><div class="post-meta__box"><div class="post-meta__box__tag-list"><a class="post-meta__box__tags" href="/tags/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/"><span class="tags-punctuation"> <i class="anzhiyufont anzhiyu-icon-tag"></i></span>渗透测试<span class="tagsPageCount">2</span></a><a class="post-meta__box__tags" href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/"><span class="tags-punctuation"> <i class="anzhiyufont anzhiyu-icon-tag"></i></span>文件上传<span class="tagsPageCount">1</span></a><a class="post-meta__box__tags" href="/tags/%E5%9F%9F%E6%8E%A7/"><span class="tags-punctuation"> <i class="anzhiyufont anzhiyu-icon-tag"></i></span>域控<span class="tagsPageCount">2</span></a></div></div></div><div class="post_share"><div class="social-share" data-image="/img/b3/cover.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.cbd.int/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"/><script src="https://cdn.cbd.int/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer="defer"></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2023/10/26/%E8%AE%B0%E4%B8%80%E6%AC%A1%E5%9F%9F%E6%8E%A7%E6%8E%A2%E7%B4%A2/"><img class="prev-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/cover1.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">记一次域控探索</div></div></a></div><div class="next-post pull-right"><a href="/2023/10/28/%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/"><img class="next-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/covercommand.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">渗透测试常用命令</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="anzhiyufont anzhiyu-icon-thumbs-up fa-fw" style="font-size: 1.5rem; margin-right: 4px"></i><span>Related Articles</span></div><div class="relatedPosts-list"><div><a href="/2023/10/26/%E8%AE%B0%E4%B8%80%E6%AC%A1%E5%9F%9F%E6%8E%A7%E6%8E%A2%E7%B4%A2/" title="记一次域控探索"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/cover1.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2023-10-26</div><div class="title">记一次域控探索</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-content"><div class="author-info__sayhi" id="author-info__sayhi" onclick="anzhiyu.changeSayHelloText()"></div><div class="author-info-avatar"><img class="avatar-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://avatars.githubusercontent.com/u/56618386?v=4" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-status"><img class="g-status" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://bu.dusays.com/2021/01/15/0b000885b5287.gif" ait="status"/></div></div><div class="author-info__description"></div><div class="author-info__bottom-group"><a class="author-info__bottom-group-left" href="/"><h1 class="author-info__name">Sircong</h1><div class="author-info__desc"></div></a><div class="card-info-social-icons is-center"><a class="social-icon faa-parent animated-hover" href="https://github.com/Sirocng/" target="_blank" title="Github"><i class="anzhiyufont anzhiyu-icon-github"></i></a><a class="social-icon faa-parent animated-hover" href="https://github.com/Sirocng/" target="_blank" title="BiliBili"><i class="anzhiyufont anzhiyu-icon-bilibili"></i></a></div></div></div></div><div class="card-widget anzhiyu-right-widget" id="card-wechat" onclick="null"><div id="flip-wrapper"><div id="flip-content"><div class="face" style="background: url(https://bu.dusays.com/2023/01/13/63c02edf44033.png) center center / 100% no-repeat"></div><div class="back face" style="background: url(null) center center / 100% no-repeat"></div></div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-bars"></i><span>Catalog</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%AD%A3%E6%96%87"><span class="toc-number">2.</span> <span class="toc-text">正文</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2023/11/04/CVE-2023-4966%EF%BC%9ACitrix-Gateway%E5%86%85%E5%AD%98%E4%BF%A1%E6%81%AF%E6%B3%84%E6%BC%8F/" title="CVE-2023-4966：Citrix Gateway内存信息泄漏"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/b3/cover.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="CVE-2023-4966：Citrix Gateway内存信息泄漏"/></a><div class="content"><a class="title" href="/2023/11/04/CVE-2023-4966%EF%BC%9ACitrix-Gateway%E5%86%85%E5%AD%98%E4%BF%A1%E6%81%AF%E6%B3%84%E6%BC%8F/" title="CVE-2023-4966：Citrix Gateway内存信息泄漏">CVE-2023-4966：Citrix Gateway内存信息泄漏</a><time datetime="2023-11-04T13:37:55.000Z" title="Created 2023-11-04 21:37:55">2023-11-04</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/10/28/%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" title="渗透测试常用命令"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/covercommand.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="渗透测试常用命令"/></a><div class="content"><a class="title" href="/2023/10/28/%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" title="渗透测试常用命令">渗透测试常用命令</a><time datetime="2023-10-28T10:06:26.000Z" title="Created 2023-10-28 18:06:26">2023-10-28</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/10/27/%E4%BB%8E%E8%AE%BF%E5%AE%A2%E5%88%B0%E6%8B%BF%E4%B8%8B%E5%86%85%E7%BD%91%E5%9F%9F%E6%8E%A7/" title="从访客到拿下内网域控"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/covervisit.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="从访客到拿下内网域控"/></a><div class="content"><a class="title" href="/2023/10/27/%E4%BB%8E%E8%AE%BF%E5%AE%A2%E5%88%B0%E6%8B%BF%E4%B8%8B%E5%86%85%E7%BD%91%E5%9F%9F%E6%8E%A7/" title="从访客到拿下内网域控">从访客到拿下内网域控</a><time datetime="2023-10-27T13:59:14.000Z" title="Created 2023-10-27 21:59:14">2023-10-27</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/10/26/%E8%AE%B0%E4%B8%80%E6%AC%A1%E5%9F%9F%E6%8E%A7%E6%8E%A2%E7%B4%A2/" title="记一次域控探索"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/cover1.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="记一次域控探索"/></a><div class="content"><a class="title" href="/2023/10/26/%E8%AE%B0%E4%B8%80%E6%AC%A1%E5%9F%9F%E6%8E%A7%E6%8E%A2%E7%B4%A2/" title="记一次域控探索">记一次域控探索</a><time datetime="2023-10-26T14:30:40.000Z" title="Created 2023-10-26 22:30:40">2023-10-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/10/24/%E5%B8%B8%E7%94%A8webshell/" title="常用webshell"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/covernote.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="常用webshell"/></a><div class="content"><a class="title" href="/2023/10/24/%E5%B8%B8%E7%94%A8webshell/" title="常用webshell">常用webshell</a><time datetime="2023-10-24T14:43:45.488Z" title="Created 2023-10-24 22:43:45">2023-10-24</time></div></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"></div><div id="footer-bar"><div class="footer-bar-links"><div class="footer-bar-left"><div id="footer-bar-tips"><div class="copyright">&copy;2021 - 2024 By <a class="footer-bar-link" href="/" title="Sircong" target="_blank">Sircong</a></div></div><div id="footer-type-tips"></div></div><div class="footer-bar-right"><a class="footer-bar-link" href="/null"></a><a class="footer-bar-link cc" href="/copyright" title="cc协议"><i class="anzhiyufont anzhiyu-icon-copyright-line"></i><i class="anzhiyufont anzhiyu-icon-creative-commons-by-line"></i><i class="anzhiyufont anzhiyu-icon-creative-commons-nc-line"></i><i class="anzhiyufont anzhiyu-icon-creative-commons-nd-line"></i></a></div></div></div></footer></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="sidebar-site-data site-data is-center"><a href="/archives/" title="archive"><div class="headline">Articles</div><div class="length-num">5</div></a><a href="/tags/" title="tag"><div class="headline">Tags</div><div class="length-num">6</div></a><a href="/categories/" title="category"><div class="headline">Categories</div><div class="length-num">3</div></a></div><span class="sidebar-menu-item-title">Function</span><div class="sidebar-menu-item"><a class="darkmode_switchbutton menu-child" href="javascript:void(0);" title="Display Mode"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i><span>Display Mode</span></a></div><div class="back-menu-list-groups"><div class="back-menu-list-group"><div class="back-menu-list-title">网页</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://blog.anheyu.com/" title="博客"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/favicon.ico" alt="博客"/><span class="back-menu-item-text">博客</span></a></div></div><div class="back-menu-list-group"><div class="back-menu-list-title">项目</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://image.anheyu.com/" title="安知鱼图床"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://image.anheyu.com/favicon.ico" alt="安知鱼图床"/><span class="back-menu-item-text">安知鱼图床</span></a></div></div></div><span class="sidebar-menu-item-title">标签</span><div class="card-tags"><div class="item-headline"></div><div class="card-tag-cloud"><a href="/tags/CVE/" style="font-size: 0.88rem;">CVE<sup>1</sup></a><a href="/tags/%E5%9F%9F%E6%8E%A7/" style="font-size: 0.88rem;">域控<sup>2</sup></a><a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 0.88rem;">文件上传<sup>1</sup></a><a href="/tags/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/" style="font-size: 0.88rem;">渗透测试<sup>2</sup></a><a href="/tags/%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" style="font-size: 0.88rem;">漏洞复现<sup>1</sup></a><a href="/tags/%E7%AC%94%E8%AE%B0/" style="font-size: 0.88rem;">笔记<sup>2</sup></a></div></div><hr/></div></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="anzhiyufont anzhiyu-icon-book-open"></i></button><button id="translateLink" type="button" title="Switch Between Traditional Chinese And Simplified Chinese">繁</button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="anzhiyufont anzhiyu-icon-arrows-left-right"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Setting"><i class="anzhiyufont anzhiyu-icon-gear"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="anzhiyufont anzhiyu-icon-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i></button></div></div><div id="nav-music"><a id="nav-music-hoverTips" onclick="anzhiyu.musicToggle()" accesskey="m">播放音乐</a><div id="console-music-bg"></div><meting-js id="8152976493" server="netease" type="playlist" mutex="true" preload="none" theme="var(--anzhiyu-main)" data-lrctype="0" order="random"></meting-js></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">Search</span><span id="loading-status"></span><button class="search-close-button"><i class="anzhiyufont anzhiyu-icon-xmark"></i></button></nav><div class="is-center" id="loading-database"><i class="anzhiyufont anzhiyu-icon-spinner anzhiyu-pulse-icon"></i><span>  Loading the Database</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="Search for Posts" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div id="rightMenu"><div class="rightMenu-group rightMenu-small"><div class="rightMenu-item" id="menu-backward"><i class="anzhiyufont anzhiyu-icon-arrow-left"></i></div><div class="rightMenu-item" id="menu-forward"><i class="anzhiyufont anzhiyu-icon-arrow-right"></i></div><div class="rightMenu-item" id="menu-refresh"><i class="anzhiyufont anzhiyu-icon-arrow-rotate-right" style="font-size: 1rem;"></i></div><div class="rightMenu-item" id="menu-top"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i></div></div><div class="rightMenu-group rightMenu-line rightMenuPlugin"><div class="rightMenu-item" id="menu-copytext"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制选中文本</span></div><div class="rightMenu-item" id="menu-pastetext"><i class="anzhiyufont anzhiyu-icon-paste"></i><span>粘贴文本</span></div><a class="rightMenu-item" id="menu-commenttext"><i class="anzhiyufont anzhiyu-icon-comment-medical"></i><span>引用到评论</span></a><div class="rightMenu-item" id="menu-newwindow"><i class="anzhiyufont anzhiyu-icon-window-restore"></i><span>新窗口打开</span></div><div class="rightMenu-item" id="menu-copylink"><i class="anzhiyufont anzhiyu-icon-link"></i><span>复制链接地址</span></div><div class="rightMenu-item" id="menu-copyimg"><i class="anzhiyufont anzhiyu-icon-images"></i><span>复制此图片</span></div><div class="rightMenu-item" id="menu-downloadimg"><i class="anzhiyufont anzhiyu-icon-download"></i><span>下载此图片</span></div><div class="rightMenu-item" id="menu-newwindowimg"><i class="anzhiyufont anzhiyu-icon-window-restore"></i><span>新窗口打开图片</span></div><div class="rightMenu-item" id="menu-search"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span>站内搜索</span></div><div class="rightMenu-item" id="menu-searchBaidu"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span>百度搜索</span></div><div class="rightMenu-item" id="menu-music-toggle"><i class="anzhiyufont anzhiyu-icon-play"></i><span>播放音乐</span></div><div class="rightMenu-item" id="menu-music-back"><i class="anzhiyufont anzhiyu-icon-backward"></i><span>切换到上一首</span></div><div class="rightMenu-item" id="menu-music-forward"><i class="anzhiyufont anzhiyu-icon-forward"></i><span>切换到下一首</span></div><div class="rightMenu-item" id="menu-music-playlist" onclick="window.open(&quot;https://y.qq.com/n/ryqq/playlist/8802438608&quot;, &quot;_blank&quot;);" style="display: none;"><i class="anzhiyufont anzhiyu-icon-radio"></i><span>查看所有歌曲</span></div><div class="rightMenu-item" id="menu-music-copyMusicName"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制歌名</span></div></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item menu-link" id="menu-randomPost"><i class="anzhiyufont anzhiyu-icon-shuffle"></i><span>随便逛逛</span></a><a class="rightMenu-item menu-link" href="/categories/"><i class="anzhiyufont anzhiyu-icon-cube"></i><span>博客分类</span></a><a class="rightMenu-item menu-link" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags"></i><span>文章标签</span></a></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item" id="menu-copy" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制地址</span></a><a class="rightMenu-item" id="menu-commentBarrage" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-message"></i><span class="menu-commentBarrage-text">关闭热评</span></a><a class="rightMenu-item" id="menu-darkmode" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i><span class="menu-darkmode-text">深色模式</span></a><a class="rightMenu-item" id="menu-translate" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-language"></i><span>轉為繁體</span></a></div></div><div id="rightmenu-mask"></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.cbd.int/@fancyapps/ui@5.0.20/dist/fancybox/fancybox.umd.js"></script><script src="https://cdn.cbd.int/instant.page@5.2.0/instantpage.js" type="module"></script><script src="https://cdn.cbd.int/vanilla-lazyload@17.8.4/dist/lazyload.iife.min.js"></script><script src="https://cdn.cbd.int/node-snackbar@0.1.16/dist/snackbar.min.js"></script><canvas id="universe"></canvas><script async src="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.0/dark/dark.js"></script><script async src="/anzhiyu/random.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><input type="hidden" name="page-type" id="page-type" value="post"></div><script>var visitorMail = "visitor@anheyu.com";
+</script><script async data-pjax src="https://cdn.cbd.int/anzhiyu-theme-static@1.0.0/waterfall/waterfall.js"></script><script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/qrcodejs/1.0.0/qrcode.min.js"></script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.1.9/icon/ali_iconfont_css.css"><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.0.0/aplayer/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.cbd.int/anzhiyu-blog-static@1.0.1/js/APlayer.min.js"></script><script src="https://cdn.cbd.int/hexo-anzhiyu-music@1.0.1/assets/js/Meting2.min.js"></script><script src="https://cdn.cbd.int/pjax@0.2.8/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+  // removeEventListener scroll 
+  anzhiyu.removeGlobalFnEvent('pjax')
+  anzhiyu.removeGlobalFnEvent('themeChange')
+
+  document.getElementById('rightside').classList.remove('rightside-show')
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+document.addEventListener('pjax:error', e => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script charset="UTF-8" src="https://cdn.cbd.int/anzhiyu-theme-static@1.1.5/accesskey/accesskey.js"></script></div><div id="popup-window"><div class="popup-window-title">通知</div><div class="popup-window-divider"></div><div class="popup-window-content"><div class="popup-tip">你好呀</div><div class="popup-link"><i class="anzhiyufont anzhiyu-icon-arrow-circle-right"></i></div></div></div></body></html>
